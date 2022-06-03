@@ -407,7 +407,6 @@ function addButton() {
       event.preventDefault();
       let messages = reviews.querySelector('.messages');
       let messagesHeight = messages.style.height;
-      console.log(messagesHeight);
       messages.style.display = 'none';
 
       let show = document.createElement('a');
