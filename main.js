@@ -107,7 +107,6 @@ burger.addEventListener('click', function() {
 
 document.addEventListener('click', function(event) {
   if (nav.classList.contains('active') && event.target.closest('div') !== nav && event.target.closest('button') !== burger) {
-    event.preventDefault();
     nav.classList.remove('active');
     hidden.classList.remove('active');
     html.classList.remove('lock');
@@ -329,10 +328,14 @@ function getTime(date) {
 }
 
 function getReview() {
-  let messages = reviews.querySelectorAll('.review');
-  for (let message of messages) {
-    reviews.removeChild(message);
+  let messages = reviews.querySelector('.messages');
+  if (messages != null) {
+    reviews.removeChild(messages);
   }
+
+  messages = document.createElement('div');
+  messages.classList.add('messages');
+  
   let adds = reviews.querySelectorAll('.add');
   for (let add of adds) {
     reviews.removeChild(add);
@@ -373,8 +376,9 @@ function getReview() {
       review.appendChild(text);
     }
 
-    reviews.appendChild(review);
+    messages.appendChild(review);
   }
+  reviews.appendChild(messages);
 
   addButton();
 }
@@ -401,19 +405,22 @@ function addButton() {
     
     hide.addEventListener('click', function(event) {
       event.preventDefault();
-      let messages = reviews.querySelectorAll('.review');
-      for (let message of messages) {
-        reviews.removeChild(message);
-      }
+      let messages = reviews.querySelector('.messages');
+      let messagesHeight = messages.style.height;
+      console.log(messagesHeight);
+      messages.style.display = 'none';
 
       let show = document.createElement('a');
-      show.className = 'hide';
+      show.className = 'show';
       show.href = '#';
       show.innerHTML = 'Показать отзывы';
 
+      window.scrollBy(0, -messagesHeight);
+
       show.addEventListener('click', function(event) {
         event.preventDefault();
-        getReview();
+        messages.style.display = 'block';
+        addButton();
         reviews.removeChild(show);
       });
 
