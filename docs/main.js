@@ -117,10 +117,17 @@ for (let mark of marks) {
   choice.addEventListener('click', function() {
     let prevMark = this.value;
     rating[getMark(prevMark)].checked = true;
+    
+    let bodyWidth1 = body.offsetWidth;
+    
     adding.style.display = 'flex';
     body.style.overflow = 'hidden';
-    body.style.paddingRight = '17px';
-    header.style.paddingRight = '17px';
+
+    let bodyWidth2 = body.offsetWidth;
+    let overflowWidth = bodyWidth2 - bodyWidth1;
+    
+    body.style.paddingRight = overflowWidth + 'px';
+    header.style.paddingRight = overflowWidth + 'px';
     clearInterval(timerID);
   }); 
 }
@@ -498,7 +505,7 @@ function closePopup(popup) {
   }
 
   popup.style.display = 'none';
-  body.style.overflow = 'scroll';
+  body.style.overflowY = 'scroll';
   body.style.paddingRight = '0';
   header.style.paddingRight = '0';
   timerID = setInterval(slideToRight, 5000);
