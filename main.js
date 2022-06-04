@@ -177,20 +177,21 @@ for (let figure of figures) {
   let text = figure.querySelector('div');
   let svg = figure.querySelector('svg');
 
-  figure.addEventListener('click', function() {
-    text.classList.add('active');
-  });
-
-  text.addEventListener('click', function() {
-    text.classList.add('active');
-    svg.classList.remove('active');
-  });
+  figure.addEventListener('click', getPromo);
 
   document.addEventListener('click', function(event) {
     if (event.target.closest('figure') !== figure) {
       text.classList.remove('active');
       svg.classList.add('active');
     }
+  });
+
+  figure.addEventListener('mouseenter', function() {
+    this.removeEventListener('click', getPromo);
+  });
+
+  figure.addEventListener('mouseleave', function() {
+    this.addEventListener('click', getPromo);
   });
 }
 
@@ -545,5 +546,10 @@ function getPercents() {
     let diagram = mark.querySelector('.diagram>div');
     diagram.style.width = percent; 
   }
+}
+
+function getPromo() {
+  text.classList.add('active');
+  svg.classList.remove('active');
 }
 
