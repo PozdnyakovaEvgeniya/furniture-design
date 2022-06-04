@@ -459,7 +459,10 @@ function setReview(event) {
 
   for (let i = 0; i < 3; i++) {
     code[i].addEventListener('input', function() {
-      code[i + 1].focus();
+      code[i].value = code[i].value.replace(/\D/g, '');
+      if (code[i].value.length == 1) {    
+        code[i + 1].focus();
+      }
     });
     
     code[i + 1].addEventListener('keydown', function(event) {
@@ -471,33 +474,36 @@ function setReview(event) {
   }
 
   code[3].addEventListener('input', function() {
-    let pas = '';
-    for (let input of code) {
-      pas += input.value;
-      input.value = '';
-    }
-    if (pas == password) {
-      let review = {
-        'name': adding.querySelector('input[type="text"]').value,
-        'tel': telephone.value,
-        'mark': getRating(),
-        'date': new Date(),
-        'review': adding.querySelector('textarea').value 
-      };
-      let links = document.querySelectorAll('.reviews>a');
-
-      for (let link of links) {
-        reviews.removeChild(link);
+    this.value = this.value.replace(/\D/g, '');
+    if (this.value.length == 1) {    
+      let pas = '';
+      for (let input of code) {
+        pas += input.value;
+        input.value = '';
       }
+      if (pas == password) {
+        let review = {
+          'name': adding.querySelector('input[type="text"]').value,
+          'tel': telephone.value,
+          'mark': getRating(),
+          'date': new Date(),
+          'review': adding.querySelector('textarea').value 
+        };
+        let links = document.querySelectorAll('.reviews>a');
 
-      reviewsArr.unshift(review);
-      reviewCount = 3;
-      getPercents();
-      getReview();
-      closePopup(confirmation);
-    } else {
-      confirmation.querySelector('h3').innerHTML = 'Неверно, введите новый код';
-      code[0].focus();
+        for (let link of links) {
+          reviews.removeChild(link);
+        }
+
+        reviewsArr.unshift(review);
+        reviewCount = 3;
+        getPercents();
+        getReview();
+        closePopup(confirmation);
+      } else {
+        confirmation.querySelector('h3').innerHTML = 'Неверно, введите новый код';
+        code[0].focus();
+      }
     }
   });
 }
